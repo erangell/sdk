@@ -19,17 +19,19 @@ const { Hyperdrive, Hypercore, resolveName, destroy } = SDK({
 })
 
 const DATPROJECT_KEY = 'dat://60c525b5589a5099aa3610a8ee550dcd454c3e118f7ac93b7d41b6b850272330'
+const HYPERCORE_KEY =        '60c525b5589a5099aa3610a8ee550dcd454c3e118f7ac93b7d41b6b850272330'
+
 const TEST_TIMEOUT = 10 * 1000
 
 test.onFinish(destroy)
 
-test('Hyperdrive - load drive', (t) => {
+test('1.0 Hyperdrive - load drive', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   const drive = Hyperdrive(DATPROJECT_KEY)
 
   if (verbose) {
-    console.log("key="+JSON.stringify(drive.key))
+    console.log("1.0 key="+JSON.stringify(drive.key))
     console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
     console.log("live="+JSON.stringify(drive.live))
     console.log("latest="+JSON.stringify(drive.latest))
@@ -38,42 +40,45 @@ test('Hyperdrive - load drive', (t) => {
   drive.readFile('/dat.json', 'utf8', (err, data) => {
     t.notOk(err, 'loaded file without error')
 
-    if (verbose) console.log("data="+data)
-
+    if (verbose) {
+      console.log("1.0 data="+data)
+      console.log("----------")
+    }
     t.end()
   })
 })
 
-test('Hyperdrive - create drive, write and read a file', (t) => {
+test('2.0 Hyperdrive - create drive, write and read a file', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   const drive = Hyperdrive()
 
   if (verbose) {
-    console.log("key="+JSON.stringify(drive.key))
+    console.log("2.0 key="+JSON.stringify(drive.key))
     console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
     console.log("live="+JSON.stringify(drive.live))
     console.log("latest="+JSON.stringify(drive.latest))
     console.log("secretKey="+JSON.stringify(drive.metadata.secretKey))
     console.log("Note: Output from code below may be further down in the test results")
+    console.log("----------")
   }
 
   drive.writeFile('/example.txt', 'Hello World!', (err) => {
     t.notOk(err, 'Able to write to hyperdrive')
 
     if (verbose) {
-    console.log("key="+JSON.stringify(drive.key))
-    console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
-    console.log("live="+JSON.stringify(drive.live))
-    console.log("latest="+JSON.stringify(drive.latest))
-    console.log("secretKey="+JSON.stringify(drive.metadata.secretKey))
+      console.log("2.0 key="+JSON.stringify(drive.key))
+      console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
+      console.log("live="+JSON.stringify(drive.live))
+      console.log("latest="+JSON.stringify(drive.latest))
+      console.log("secretKey="+JSON.stringify(drive.metadata.secretKey))
     }
 
     drive.readFile('/notfound.txt', 'utf8', (err, data) => {
       t.ok(err, 'File not found error thrown when file does not exist')
 
       if (verbose) {
-        console.log("key="+JSON.stringify(drive.key))
+        console.log("2.0 key="+JSON.stringify(drive.key))
         console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
         console.log("live="+JSON.stringify(drive.live))
         console.log("latest="+JSON.stringify(drive.latest))
@@ -87,12 +92,13 @@ test('Hyperdrive - create drive, write and read a file', (t) => {
         t.notOk(err, 'Able to read file that was written to hyperdrive')
 
         if (verbose) {
-          console.log("key="+JSON.stringify(drive.key))
+          console.log("2.0 key="+JSON.stringify(drive.key))
           console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
           console.log("live="+JSON.stringify(drive.live))
           console.log("latest="+JSON.stringify(drive.latest))
           console.log("secretKey="+JSON.stringify(drive.metadata.secretKey))
           console.log("data="+JSON.stringify(data)) 
+          console.log("----------")
         }
         t.equal(data, "Hello World!", 'Read the same data that was previously written to the file')
       })
@@ -103,11 +109,11 @@ t.end()
 
 })
 
-test('Hyperdrive - get existing drive', (t) => {
+test('3.0 Hyperdrive - get existing drive', (t) => {
   const drive = Hyperdrive()
 
   if (verbose) {
-    console.log("key="+JSON.stringify(drive.key))
+    console.log("3.0 key="+JSON.stringify(drive.key))
     console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
     console.log("live="+JSON.stringify(drive.live))
     console.log("latest="+JSON.stringify(drive.latest))
@@ -115,16 +121,17 @@ test('Hyperdrive - get existing drive', (t) => {
   }
 
   drive.ready(() => {
-    if (verbose) console.log("The hyperdrive is ready.  Key="+JSON.stringify(drive.key))
+    if (verbose) console.log("3.0 The hyperdrive is ready.  Key="+JSON.stringify(drive.key))
 
     const existing = Hyperdrive(drive.key)
 
     if (verbose) {
-      console.log("key="+JSON.stringify(existing.key))
+      console.log("3.0 key="+JSON.stringify(existing.key))
       console.log("discoveryKey="+JSON.stringify(existing.discoveryKey))
       console.log("live="+JSON.stringify(existing.live))
       console.log("latest="+JSON.stringify(existing.latest))
       console.log("secretKey="+JSON.stringify(existing.metadata.secretKey))
+      console.log("----------")
     }
 
     t.equal(existing, drive, 'Got existing drive by reference')
@@ -133,54 +140,87 @@ test('Hyperdrive - get existing drive', (t) => {
   })
 })
 
-test('Hyperdrive - new drive created after close', (t) => {
+test('4.0 Hyperdrive - new drive created after close', (t) => {
   const drive = Hyperdrive()
-
+  
   if (verbose)
   {
-    console.log("key="+JSON.stringify(drive.key))
+    console.log("4.0 key="+JSON.stringify(drive.key))
     console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
     console.log("live="+JSON.stringify(drive.live))
     console.log("latest="+JSON.stringify(drive.latest))
     console.log("secretKey="+JSON.stringify(drive.metadata.secretKey))
   }
 
-  drive.ready(() => {
+  drive.ready( () => {
+    drive.writeFile('/test.txt', 'Test file in new hyperdrive', (err) => {
+      t.notOk(err, 'Wrote test file to new hyperdrive')
+    })
+
+    if (verbose)
+    {
+      console.log("4.0 key="+JSON.stringify(drive.key))
+      console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
+      console.log("live="+JSON.stringify(drive.live))
+      console.log("latest="+JSON.stringify(drive.latest))
+      console.log("secretKey="+JSON.stringify(drive.metadata.secretKey))
+    }
+
     drive.once('close', () => {
       const existing = Hyperdrive(drive.key)
 
       if (verbose)
       {
-        console.log("key="+JSON.stringify(existing.key))
+        console.log("4.0 drive.key="+JSON.stringify(drive.key))
+        console.log("discoveryKey="+JSON.stringify(drive.discoveryKey))
+        console.log("live="+JSON.stringify(drive.live))
+        console.log("latest="+JSON.stringify(drive.latest))
+        console.log("secretKey="+JSON.stringify(drive.metadata.secretKey))
+        console.log("existing.key="+JSON.stringify(existing.key))
         console.log("discoveryKey="+JSON.stringify(existing.discoveryKey))
         console.log("live="+JSON.stringify(existing.live))
         console.log("latest="+JSON.stringify(existing.latest))
         console.log("secretKey="+JSON.stringify(existing.metadata.secretKey))
       }
 
+      //Is this test correct if we are getting null?
+      //Should we write a file and see if it exists in the new drive?
       t.notEqual(existing, drive, 'Got new drive by reference')
 
-      if (verbose)
-      {
-        console.log("key="+JSON.stringify(existing.key))
-        console.log("discoveryKey="+JSON.stringify(existing.discoveryKey))
-        console.log("live="+JSON.stringify(existing.live))
-        console.log("latest="+JSON.stringify(existing.latest))
-        console.log("secretKey="+JSON.stringify(existing.metadata.secretKey))
-      }
+      existing.readFile('/test.txt', 'utf8', (err2, data2) => {
+        t.notOk(err2, 'Read test file that was written to original hyperdrive')
 
-      t.end()
-    })
+        if (verbose) {
+          console.log("4.0 key="+JSON.stringify(existing.key))
+          console.log("discoveryKey="+JSON.stringify(existing.discoveryKey))
+          console.log("live="+JSON.stringify(existing.live))
+          console.log("latest="+JSON.stringify(existing.latest))
+          console.log("secretKey="+JSON.stringify(existing.metadata.secretKey))
+          console.log("data="+JSON.stringify(data2)) 
+          console.log("----------")
+        }
+        t.equal(data2, "Test file in new hyperdrive", 'Read the same data that was previously written to the test file')
+      }) //existing.readFile
+
+    }) //drive.once('close')
     drive.close()
-  })
+
+  }) //drive.ready
+
+  t.end()
+
 })
 
-test('resolveName datfoundation - resolve and load archive', (t) => {
+
+test('5.0 resolveName datfoundation - resolve and load archive', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   resolveName('dat://dat.foundation', (err, resolved) => {
     t.notOk(err, 'Resolved dat.foundation successfully')
 
+    if (verbose) {
+      console.log("5.0 resolved="+JSON.stringify(resolved))
+    }
     const drive = Hyperdrive(resolved)
 
     drive.readFile('/dat.json', 'utf8', (data, err2) => {
@@ -188,18 +228,21 @@ test('resolveName datfoundation - resolve and load archive', (t) => {
 
       if (verbose) {
           console.log("data="+JSON.stringify(data))
+          console.log("----------")
       }
-      t.equal(data.status,404,'Name resolved but site returns 404 error')
     })
   })
   t.end()
 })
 
-test('resolveName beakerbrowser - resolve and load archive', (t) => {
+test('6.0 resolveName beakerbrowser - resolve and load archive', (t) => {
 
   resolveName('dat://beakerbrowser.com', (err3, resolved3) => {
     t.notOk(err3, 'Resolved beakerbrowser.com successfully')
 
+    if (verbose) {
+      console.log("6.0 resolved="+JSON.stringify(resolved3))
+    }
     const drive3 = Hyperdrive(resolved3)
 
     drive3.readFile('/dat.json', 'utf8', (data3, err3) => {
@@ -207,19 +250,20 @@ test('resolveName beakerbrowser - resolve and load archive', (t) => {
 
       if (verbose) {
           console.log("data3="+JSON.stringify(data3))
+          console.log("----------")
       }
     })
   })
   t.end()
 })
 
-test('Hypercore - create', (t) => {
+test('7.0 Hypercore - create', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   const core = Hypercore()
 
   if (verbose) {
-    console.log("key="+JSON.stringify(core.key))
+    console.log("7.0 key="+JSON.stringify(core.key))
     console.log("discoveryKey="+JSON.stringify(core.discoveryKey))
   }
 
@@ -227,32 +271,32 @@ test('Hypercore - create', (t) => {
     t.notOk(err, 'able to write to hypercore')
 
     if (verbose) {
-      console.log("key="+JSON.stringify(core.key))
+      console.log("7.0 key="+JSON.stringify(core.key))
       console.log("discoveryKey="+JSON.stringify(core.discoveryKey))
+      console.log("----------")
     }
 
     t.end()
   })
 })
 
-test('Hypercore - load', (t) => {
+test('8.0 Hypercore - load', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
-  const key = '60c525b5589a5099aa3610a8ee550dcd454c3e118f7ac93b7d41b6b850272330'
-
-  const core = Hypercore(key)
+  const core = Hypercore(HYPERCORE_KEY)
 
   if (verbose) {
-    console.log("key="+JSON.stringify(core.key))
+    console.log("8.0 key="+JSON.stringify(core.key))
     console.log("discoveryKey="+JSON.stringify(core.discoveryKey))
   }
 
   core.ready(() => {
-    t.equal(core.key.toString('hex'), key, 'loaded key')
+    t.equal(core.key.toString('hex'), HYPERCORE_KEY, 'loaded key matches HYPERCORE_KEY')
 
     if (verbose) {
-      console.log("key="+JSON.stringify(core.key))
+      console.log("8.0 key="+JSON.stringify(core.key))
       console.log("discoveryKey="+JSON.stringify(core.discoveryKey))
+      console.log("----------")
     }
 
     t.end()
@@ -260,7 +304,7 @@ test('Hypercore - load', (t) => {
 })
 
 
-test('Example1 - promises', (t) => {
+test('9.0 Example1 - promises', (t) => {
     t.timeoutAfter(TEST_TIMEOUT)
 
     const myCore = Hypercore(null, {
@@ -306,7 +350,7 @@ test('Example1 - promises', (t) => {
   t.end()
 })
 
-test ('Example2 - promises', (t) => {
+test ('10.0 Example2 - promises', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   const hypertrie = require('hypertrie')
