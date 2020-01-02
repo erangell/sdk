@@ -12,13 +12,13 @@ const { DatArchive, destroy } = SDK({
   }
 })
 
-const DATPROJECT_KEY = 'dat://60c525b5589a5099aa3610a8ee550dcd454c3e118f7ac93b7d41b6b850272330'
-const DATPROJECT_URL = 'dat://dat.foundation'
+const DATPROJECT_KEY = 'dat://32d225818f3928d4f17ed4893108f630d59023ccbbda196262ecd936e4033421'
+const DATPROJECT_URL = 'dat://beakerbrowser.com/'
 const TEST_TIMEOUT = 10 * 1000
 
 test.onFinish(destroy)
 
-test('DatArchive - load drive', async (t) => {
+test('P1.0 - DatArchive - load drive', async (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   try {
@@ -36,7 +36,7 @@ test('DatArchive - load drive', async (t) => {
   }
 })
 
-test('DatArchive - create drive', async (t) => {
+test('P2.0 - DatArchive - create drive', async (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
   try {
     const drive = new DatArchive()
@@ -51,7 +51,7 @@ test('DatArchive - create drive', async (t) => {
   }
 })
 
-test('DatArchive - get existing drive', async (t) => {
+test('P3.0 - DatArchive - get existing drive', async (t) => {
   try {
     const drive = await DatArchive.create()
 
@@ -64,7 +64,7 @@ test('DatArchive - get existing drive', async (t) => {
   } catch (e) { t.error(e) }
 })
 
-test('DatArchive - new drive created after close', async (t) => {
+test('P4.0 - DatArchive - new drive created after close', async (t) => {
   try {
     const drive = await DatArchive.create()
 
@@ -82,7 +82,7 @@ test('DatArchive - new drive created after close', async (t) => {
   }
 })
 
-test('DatArchive - resolve and load archive', async (t) => {
+test('P5.0 - DatArchive - resolve and load archive', async (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   try {

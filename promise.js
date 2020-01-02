@@ -63,13 +63,13 @@ module.exports = function SDK (opts) {
   }
 
   async function reallyReady (archive) {
-    if(archive.writable) return
+    if (archive.writable) return
 
     const files = new Promise((resolve, reject) => {
       archive.readdir('/', (err, files) => err ? resolve([]) : resolve(files))
     })
 
-    if(files.length) return
+    if (files.length) return
 
     return new Promise((resolve, reject) => {
       function cb (err, result) {
@@ -130,7 +130,7 @@ module.exports = function SDK (opts) {
       this.url = url
 
       this._loadPromise = Promise.resolve().then(async () => {
-        let { key, version } = await getURLData(url)
+        const { key, version } = await getURLData(url)
 
         let archive = null
 
@@ -254,7 +254,7 @@ module.exports = function SDK (opts) {
         end = end || this._checkout.metadata.length
         if (reverse) {
           // swap values
-          let t = start
+          const t = start
           start = end
           end = t
           // start from the end
@@ -425,7 +425,7 @@ module.exports = function SDK (opts) {
     static async resolveName (name) {
       // If it's already a valid dat URL, don't bother resolving it
       // Avoids the case where you can't load an archive while offline
-      if(name.match(DAT_KEY_URL_REGEX)) {
+      if (name.match(DAT_KEY_URL_REGEX)) {
         return name
       }
       return new Promise((resolve, reject) => {
