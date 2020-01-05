@@ -28,7 +28,7 @@ const TEST_TIMEOUT = 10 * 1000
 
 test.onFinish(destroy)
 
-test('1.0 Hyperdrive - load drive', (t) => {
+test.skip('1.0 Hyperdrive - load drive', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   const drive = Hyperdrive(BEAKER_URL)
@@ -52,7 +52,7 @@ test('1.0 Hyperdrive - load drive', (t) => {
   })
 })
 
-test('2.0 Hyperdrive - create drive, write and read a file', (t) => {
+test.skip('2.0 Hyperdrive - create drive, write and read a file', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   const drive = Hyperdrive()
@@ -118,7 +118,7 @@ test('2.0 Hyperdrive - create drive, write and read a file', (t) => {
   })
 })
 
-test('3.0 Hyperdrive - get existing drive', (t) => {
+test.skip('3.0 Hyperdrive - get existing drive', (t) => {
   const drive = Hyperdrive()
 
   if (verbose) {
@@ -150,7 +150,7 @@ test('3.0 Hyperdrive - get existing drive', (t) => {
   })
 })
 
-test('4.0 Hyperdrive - new drive created after close', (t) => {
+test.skip('4.0 Hyperdrive - new drive created after close', (t) => {
   const drive = Hyperdrive()
 
   if (verbose) {
@@ -221,7 +221,7 @@ test('4.0 Hyperdrive - new drive created after close', (t) => {
   }) // drive.ready
 })
 
-test('5.0 resolveName beakerbrowser - resolve and load archive', (t) => {
+test.skip('5.0 resolveName beakerbrowser - resolve and load archive', (t) => {
   resolveName('dat://beakerbrowser.com', (err3, resolved3) => {
     t.notOk(err3, 'Resolved beakerbrowser.com successfully')
 
@@ -243,7 +243,7 @@ test('5.0 resolveName beakerbrowser - resolve and load archive', (t) => {
   })
 })
 
-test('6.0 Hypercore - create', (t) => {
+test.skip('6.0 Hypercore - create', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   const core = Hypercore()
@@ -279,7 +279,7 @@ test('6.0 Hypercore - create', (t) => {
 })
 
 
-test('7.0 Hypercore - load', (t) => {
+test.skip('7.0 Hypercore - load', (t) => {
   t.timeoutAfter(TEST_TIMEOUT)
 
   const core2 = Hypercore(HYPERCORE_KEY)
