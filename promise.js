@@ -130,7 +130,7 @@ module.exports = function SDK (opts) {
       this.url = url
 
       this._loadPromise = Promise.resolve().then(async () => {
-        const { key, version } = await getURLData(url)
+        let { key, version } = await getURLData(url)
 
         let archive = null
 
@@ -254,7 +254,7 @@ module.exports = function SDK (opts) {
         end = end || this._checkout.metadata.length
         if (reverse) {
           // swap values
-          const t = start
+          let t = start
           start = end
           end = t
           // start from the end
